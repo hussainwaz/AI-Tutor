@@ -6,7 +6,18 @@ export default function Home() {
   const [question, setQuestion] = useState('')
   const [context, setContext] = useState('')
   const [loading, setLoading] = useState(false)
-  const [result, setResult] = useState<any>(null)
+  type AIResponse = {
+    summary: string;
+    steps: string[];
+    examples: string[];
+    confidence: number;
+    extra: string;
+  };
+  type ResultType = {
+    parsed?: AIResponse;
+    error?: string;
+  };
+  const [result, setResult] = useState<ResultType | null>(null)
 
   // Show welcome message on initial load
   const welcomeMessage = {
@@ -103,12 +114,12 @@ export default function Home() {
         {result?.parsed ? (
           <AIResponseRenderer response={result.parsed} />
         ) : (
-          <AIResponseRenderer response={welcomeMessage} />
+          <AIResponseRenderer response={welcomeMessage as AIResponse} />
         )}
 
         {result?.error && (
           <div className="max-w-2xl mx-auto mt-6 p-4 bg-red-500/20 border border-red-500/50 rounded-lg text-red-200">
-            <p>❌ {result.error}</p>
+            <p>{'❌ ' + result.error}</p>
           </div>
         )}
       </div>

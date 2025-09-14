@@ -14,13 +14,12 @@ interface AIResponseRendererProps {
 
 const AIResponseRenderer: React.FC<AIResponseRendererProps> = ({ response }) => {
     const [displayedText, setDisplayedText] = useState('');
-    const [currentIndex, setCurrentIndex] = useState(0);
+    // Removed unused currentIndex
 
     useEffect(() => {
         if (!response?.summary) return;
 
         setDisplayedText('');
-        setCurrentIndex(0);
 
         const typeText = () => {
             const text = response.summary;
@@ -43,7 +42,7 @@ const AIResponseRenderer: React.FC<AIResponseRendererProps> = ({ response }) => 
 
     if (!response) return null;
 
-    const { summary, steps, examples, extra } = response;
+    const { steps, examples, extra } = response;
 
     return (
         <div className="max-w-2xl mx-auto mt-6">
@@ -66,7 +65,7 @@ const AIResponseRenderer: React.FC<AIResponseRendererProps> = ({ response }) => 
                         {steps && steps.length > 0 && (
                             <div className="bg-white/5 rounded-lg p-4">
                                 <h3 className="text-lg font-semibold text-purple-300 mb-3 flex items-center">
-                                    📝 Here's how to do it:
+                                    📝 Here&apos;s how to do it:
                                 </h3>
                                 <ol className="space-y-2">
                                     {steps.map((step, idx) => (

@@ -73,14 +73,14 @@ export async function POST(req: NextRequest) {
 
         try {
             parsed = JSON.parse(cleanText);
-        } catch (e) {
+        } catch {
             // Try to extract JSON from the text
             const start = cleanText.indexOf('{');
             const end = cleanText.lastIndexOf('}');
             if (start !== -1 && end !== -1 && end > start) {
                 try {
                     parsed = JSON.parse(cleanText.slice(start, end + 1));
-                } catch (err) {
+                } catch {
                     // If all parsing fails, create a fallback response
                     parsed = {
                         summary: "I apologize, but I had trouble formatting my response properly.",
@@ -102,8 +102,8 @@ export async function POST(req: NextRequest) {
             }
         }
         return new Response(JSON.stringify({ raw: text, parsed }), { status: 200 });
-    } catch (err: any) {
+    } catch (err: unknown) {
         console.error(err);
-        return new Response(JSON.stringify({ error: err.message ?? String(err) }), { status: 500 });
+        return new Response(JSON.stringify({ error: (err instanceof Error ? err.message : String(err)) }), { status: 500 });
     }
 }
